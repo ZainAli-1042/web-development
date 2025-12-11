@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment 10: Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        
+        .update-btn {
+            background-color: #ffc107;
+            color: black;
+        }
+        
+        .update-btn:hover {
+            background-color: #e0a800;
+        }
+        
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        .search-section {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+        }
+        
+        .search-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 15px;
+        }
+        
+        .control-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        .highlight-btn {
+            background-color: #ffc107;
+            color: black;
+        }
+        
+        .delete-all-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th {
+            background-color: #343a40;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #454d55;
+        }
+        
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .edit-btn {
+            background-color: #17a2b8;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .top-student {
+            background-color: #fff3cd !important;
+        }
+        
+        .low-cgpa {
+            background-color: #f8d7da !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management System</h1>
+        
+        <div id="message" class="message info">
+            Welcome! Add your first student record.
+        </div>
+        
+        <div class="form-section">
+            <h2>Student Form</h2>
+            <form id="studentForm">
+                <input type="hidden" id="studentId">
+                
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" placeholder="Enter student name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rollNumber">Roll Number *</label>
+                    <input type="text" id="rollNumber" placeholder="Enter roll number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cgpa">CGPA (0-10) *</label>
+                    <input type="number" id="cgpa" min="0" max="10" step="0.1" placeholder="Enter CGPA" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <input type="text" id="course" placeholder="Enter course name">
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="add-btn" id="submitBtn">Add Student</button>
+                    <button type="button" class="update-btn" id="updateBtn" style="display:none;">Update Student</button>
+                    <button type="button" class="cancel-btn" id="cancelBtn" style="display:none;">Cancel</button>
+                    <button type="button" class="cancel-btn" onclick="clearForm()">Clear Form</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="totalStudents">0</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avgCGPA">0.0</div>
+                <div class="stat-label">Average CGPA</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="topCGPA">0.0</div>
+                <div class="stat-label">Highest CGPA</div>
+            </div>
+        </div>
+        
+        <div class="search-section">
+            <h3>Search Students</h3>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by name or roll number...">
+                <button class="search-btn" onclick="searchStudents()">Search</button>
+                <button class="cancel-btn" onclick="clearSearch()">Clear</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="sortByName()">Sort by Name</button>
+            <button class="control-btn" onclick="sortByCGPA()">Sort by CGPA</button>
+            <button class="control-btn highlight-btn" onclick="highlightTop()">Highlight Top Students</button>
+            <button class="control-btn delete-all-btn" onclick="deleteAll()">Delete All</button>
+        </div>
+        
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Roll No.</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>CGPA</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Student data will appear here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // ============== CONSTRUCTOR FUNCTION ==============
+        function Student(id, name, rollNumber, cgpa, course) {
+            this.id = id;
+            this.name = name;
+            this.rollNumber = rollNumber;
+            this.cgpa = parseFloat(cgpa);
+            this.course = course;
+            
+            this.getStatus = function() {
+                if (this.cgpa >= 9.0) return "Excellent";
+                if (this.cgpa >= 7.0) return "Good";
+                if (this.cgpa >= 5.0) return "Average";
+                return "Needs Help";
+            };
+        }
+        
+        // ============== GLOBAL VARIABLES ==============
+        let students = [];
+        let nextId = 1;
+        let isEditing = false;
+        let currentDisplay = []; // Track what's currently displayed
+        
+        // ============== CORE FUNCTIONS ==============
+        function addStudent(name, rollNumber, cgpa, course) {
+            // Check if roll number already exists
+            if (students.some(s => s.rollNumber === rollNumber)) {
+                showMessage("Roll number already exists!", "error");
+                return false;
+            }
+            
+            const student = new Student(nextId, name, rollNumber, cgpa, course);
+            students.push(student);
+            nextId++;
+            
+            // Update the display with current students
+            displayStudents(students);
+            updateStats();
+            showMessage(`Student "${name}" added successfully!`, "success");
+            return true;
+        }
+        
+        function deleteStudent(id) {
+            const index = students.findIndex(s => s.id === id);
+            if (index !== -1) {
+                const name = students[index].name;
+                students.splice(index, 1);
+                // Update display with current students
+                displayStudents(students);
+                updateStats();
+                showMessage(`Student "${name}" deleted!`, "success");
+                return true;
+            }
+            return false;
+        }
+        
+        function updateStudent(id, name, rollNumber, cgpa, course) {
+            const student = students.find(s => s.id === id);
+            if (student) {
+                // Check if new roll number conflicts with other students
+                const otherStudent = students.find(s => s.id !== id && s.rollNumber === rollNumber);
+                if (otherStudent) {
+                    showMessage(`Roll number "${rollNumber}" already exists for another student!`, "error");
+                    return false;
+                }
+                
+                student.name = name;
+                student.rollNumber = rollNumber;
+                student.cgpa = parseFloat(cgpa);
+                student.course = course;
+                
+                // Update display with current students
+                displayStudents(students);
+                updateStats();
+                showMessage(`Student "${name}" updated!`, "success");
+                return true;
+            }
+            return false;
+        }
+        
+        function displayStudents(studentList = students) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            // Save current display for highlighting
+            currentDisplay = studentList;
+            
+            if (studentList.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="6" style="text-align:center; padding:20px;">No students found. Add your first student!</td>`;
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            studentList.forEach(student => {
+                const row = document.createElement('tr');
+                let statusColor = '#6c757d';
+                
+                if (student.cgpa >= 9.0) statusColor = '#28a745';
+                else if (student.cgpa >= 7.0) statusColor = '#17a2b8';
+                else if (student.cgpa >= 5.0) statusColor = '#ffc107';
+                else statusColor = '#dc3545';
+                
+                row.innerHTML = `
+                    <td>${student.rollNumber}</td>
+                    <td>${student.name}</td>
+                    <td>${student.course || '-'}</td>
+                    <td>${student.cgpa.toFixed(2)}</td>
+                    <td><span style="color:${statusColor}; font-weight:bold">${student.getStatus()}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="edit-btn" onclick="editStudent(${student.id})">Edit</button>
+                            <button class="delete-btn" onclick="confirmDelete(${student.id})">Delete</button>
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // ============== UTILITY FUNCTIONS ==============
+        function updateStats() {
+            document.getElementById('totalStudents').textContent = students.length;
+            
+            if (students.length > 0) {
+                const totalCGPA = students.reduce((sum, s) => sum + s.cgpa, 0);
+                const avgCGPA = totalCGPA / students.length;
+                document.getElementById('avgCGPA').textContent = avgCGPA.toFixed(2);
+                
+                const maxCGPA = Math.max(...students.map(s => s.cgpa));
+                document.getElementById('topCGPA').textContent = maxCGPA.toFixed(2);
+            } else {
+                document.getElementById('avgCGPA').textContent = '0.0';
+                document.getElementById('topCGPA').textContent = '0.0';
+            }
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            
+            setTimeout(() => {
+                if (messageDiv.textContent === text) {
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'message';
+                }
+            }, 3000);
+        }
+        
+        function clearForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('studentId').value = '';
+            document.getElementById('submitBtn').style.display = 'inline-block';
+            document.getElementById('updateBtn').style.display = 'none';
+            document.getElementById('cancelBtn').style.display = 'none';
+            isEditing = false;
+        }
+        
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (student) {
+                document.getElementById('studentId').value = student.id;
+                document.getElementById('name').value = student.name;
+                document.getElementById('rollNumber').value = student.rollNumber;
+                document.getElementById('cgpa').value = student.cgpa;
+                document.getElementById('course').value = student.course || '';
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('updateBtn').style.display = 'inline-block';
+                document.getElementById('cancelBtn').style.display = 'inline-block';
+                isEditing = true;
+                
+                showMessage(`Editing student: ${student.name}`, "info");
+            }
+        }
+        
+        function confirmDelete(id) {
+            const student = students.find(s => s.id === id);
+            if (student && confirm(`Are you sure you want to delete "${student.name}"?`)) {
+                deleteStudent(id);
+            }
+        }
+        
+        function searchStudents() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query) {
+                displayStudents(students);
+                return;
+            }
+            
+            const results = students.filter(s => 
+                s.name.toLowerCase().includes(query) || 
+                s.rollNumber.toLowerCase().includes(query)
+            );
+            
+            displayStudents(results);
+        }
+        
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayStudents(students);
+        }
+        
+        function sortByName() {
+            const sorted = [...students].sort((a, b) => a.name.localeCompare(b.name));
+            displayStudents(sorted);
+            showMessage("Sorted by student name", "info");
+        }
+        
+        function sortByCGPA() {
+            const sorted = [...students].sort((a, b) => b.cgpa - a.cgpa);
+            displayStudents(sorted);
+            showMessage("Sorted by CGPA (highest first)", "info");
+        }
+        
+        function highlightTop() {
+            if (students.length === 0) {
+                showMessage("No students to highlight", "error");
+                return;
+            }
+            
+            const maxCGPA = Math.max(...students.map(s => s.cgpa));
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            // Remove all highlights first
+            rows.forEach(row => {
+                row.classList.remove('top-student');
+            });
+            
+            // Add highlight to top students in current display
+            rows.forEach((row, index) => {
+                if (currentDisplay[index] && currentDisplay[index].cgpa === maxCGPA) {
+                    row.classList.add('top-student');
+                }
+            });
+            
+            showMessage(`Highlighted students with CGPA: ${maxCGPA.toFixed(2)}`, "success");
+        }
+        
+        function deleteAll() {
+            if (students.length === 0) {
+                showMessage("No students to delete", "error");
+                return;
+            }
+            
+            if (confirm(`Delete all ${students.length} students?`)) {
+                students = [];
+                nextId = 1;
+                displayStudents(students);
+                updateStats();
+                showMessage("All students deleted", "success");
+            }
+        }
+        
+        // ============== EVENT LISTENERS ==============
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('studentId').value;
+            const name = document.getElementById('name').value.trim();
+            const rollNumber = document.getElementById('rollNumber').value.trim();
+            const cgpa = document.getElementById('cgpa').value;
+            const course = document.getElementById('course').value.trim();
+            
+            // Validate inputs
+            if (!name || !rollNumber || !cgpa) {
+                showMessage("Please fill all required fields!", "error");
+                return;
+            }
+            
+            const cgpaNum = parseFloat(cgpa);
+            if (cgpaNum < 0 || cgpaNum > 10 || isNaN(cgpaNum)) {
+                showMessage("CGPA must be a number between 0 and 10!", "error");
+                return;
+            }
+            
+            if (isEditing) {
+                updateStudent(parseInt(id), name, rollNumber, cgpa, course);
+            } else {
+                addStudent(name, rollNumber, cgpa, course);
+            }
+            
+            clearForm();
+        });
+        
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            document.getElementById('studentForm').dispatchEvent(new Event('submit'));
+        });
+        
+        document.getElementById('cancelBtn').addEventListener('click', clearForm);
+        
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                searchStudents();
+            }
+        });
+        
+        // Search as you type
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value;
+            if (query.length >= 2 || query.length === 0) {
+                searchStudents();
+            }
+        });
+        
+        // ============== INITIALIZATION ==============
+        function addSampleData() {
+            // Clear any existing data first
+            students = [];
+            nextId = 1;
+            
+            addStudent("John", "CE101", 8.5, "Computer Engineering");
+  
+            
+            showMessage("Sample data loaded. Try adding, editing, or deleting students!", "info");
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            displayStudents(students);
+            updateStats();
+            addSampleData();
+        };
+    </script>
+</body>
+</html>
